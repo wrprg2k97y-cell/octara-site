@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>O que é IDRS no ar-condicionado? Entenda o índice que define sua conta de luz | Octara</title>
+  <meta name="description" content="IDRS é o índice que mede a eficiência real do ar-condicionado em condições de uso cotidiano. Entenda o que significa, como interpretar e por que as fabricantes raramente explicam." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --azul-petroleo: #0F2A3D;
+      --azul-profundo: #123F5A;
+      --laranja: #E07A2F;
+      --verde-polvo: #1D9E75;
+      --texto-principal: #1A1A1A;
+      --texto-secundario: #6B7280;
+      --fundo-claro: #F8F9FA;
+      --borda: #E5E7EB;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--texto-principal);
+      background: #fff;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    header {
+      background: var(--azul-petroleo);
+      padding: 20px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .btn-header {
+      background: var(--laranja);
+      color: #fff;
+      padding: 10px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .btn-header:hover { opacity: 0.88; }
+
+    /* HERO DO ARTIGO */
+    .article-hero {
+      background: linear-gradient(135deg, var(--azul-petroleo) 0%, var(--azul-profundo) 100%);
+      padding: 72px 24px 60px;
+      text-align: center;
+    }
+
+    .article-tag {
+      display: inline-block;
+      background: rgba(29, 158, 117, 0.2);
+      color: var(--verde-polvo);
+      border: 1px solid rgba(29, 158, 117, 0.4);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+    }
+
+    .article-hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: #fff;
+      max-width: 780px;
+      margin: 0 auto 20px;
+      line-height: 1.3;
+    }
+
+    .article-meta {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.88rem;
+    }
+
+    .article-meta span {
+      margin: 0 8px;
+    }
+
+    /* LAYOUT PRINCIPAL */
+    .article-layout {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 60px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .article-layout {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      .sidebar { order: -1; }
+    }
+
+    /* CONTEÚDO */
+    .article-content p {
+      font-size: 1.05rem;
+      color: #2D3748;
+      margin-bottom: 24px;
+    }
+
+    .article-content h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--azul-petroleo);
+      margin: 48px 0 16px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--borda);
+    }
+
+    .article-content strong {
+      color: var(--azul-petroleo);
+      font-weight: 600;
+    }
+
+    /* DESTAQUE */
+    .destaque-box {
+      background: linear-gradient(135deg, #EBF8F3 0%, #F0FAF6 100%);
+      border-left: 4px solid var(--verde-polvo);
+      border-radius: 0 12px 12px 0;
+      padding: 20px 24px;
+      margin: 32px 0;
+    }
+
+    .destaque-box p {
+      margin: 0;
+      font-size: 1.05rem;
+      color: #1A3D2E;
+      font-style: italic;
+    }
+
+    /* TABELA */
+    .tabela-wrap {
+      overflow-x: auto;
+      margin: 32px 0;
+      border-radius: 12px;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+
+    thead {
+      background: var(--azul-petroleo);
+      color: #fff;
+    }
+
+    thead th {
+      padding: 14px 20px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.88rem;
+      letter-spacing: 0.3px;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid var(--borda);
+      transition: background 0.15s;
+    }
+
+    tbody tr:hover { background: var(--fundo-claro); }
+    tbody tr:last-child { border-bottom: none; }
+
+    tbody td {
+      padding: 14px 20px;
+      color: var(--texto-principal);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .badge-ouro {
+      background: #FEF9C3;
+      color: #854D0E;
+      border: 1px solid #FDE047;
+    }
+
+    .badge-recomenda {
+      background: #DCFCE7;
+      color: #166534;
+      border: 1px solid #86EFAC;
+    }
+
+    .badge-entrada {
+      background: #F3F4F6;
+      color: #4B5563;
+      border: 1px solid #D1D5DB;
+    }
+
+    /* CAIXA DE CONTA */
+    .conta-box {
+      background: var(--azul-petroleo);
+      color: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      margin: 40px 0;
+    }
+
+    .conta-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+
+    .conta-comparativo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    @media (max-width: 500px) {
+      .conta-comparativo { grid-template-columns: 1fr; }
+    }
+
+    .conta-item {
+      background: rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 18px;
+      text-align: center;
+    }
+
+    .conta-item .label {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+
+    .conta-item .valor {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .conta-item .subvalor {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+
+    .conta-economia {
+      background: rgba(29, 158, 117, 0.2);
+      border: 1px solid rgba(29, 158, 117, 0.4);
+      border-radius: 10px;
+      padding: 14px 20px;
+      text-align: center;
+      color: #6EE7B7;
+      font-size: 0.95rem;
+    }
+
+    .conta-economia strong {
+      color: #6EE7B7;
+      font-size: 1.1rem;
+    }
+
+    .conta-nota {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.4);
+      margin-top: 14px;
+      text-align: center;
+    }
+
+    /* CTA */
+    .cta-box {
+      background: linear-gradient(135deg, var(--laranja) 0%, #C96820 100%);
+      border-radius: 16px;
+      padding: 36px 32px;
+      text-align: center;
+      margin: 48px 0 0;
+    }
+
+    .cta-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .cta-box p {
+      color: rgba(255,255,255,0.85);
+      font-size: 0.95rem;
+      margin-bottom: 24px !important;
+    }
+
+    .btn-cta {
+      display: inline-block;
+      background: #fff;
+      color: var(--laranja);
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 14px 32px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+
+    /* ASSINATURA */
+    .assinatura {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 48px;
+      padding-top: 32px;
+      border-top: 1px solid var(--borda);
+    }
+
+    .assinatura-avatar {
+      width: 48px;
+      height: 48px;
+      background: var(--azul-petroleo);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .assinatura-info .nome {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--texto-principal);
+    }
+
+    .assinatura-info .desc {
+      font-size: 0.82rem;
+      color: var(--texto-secundario);
+      margin-top: 2px;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: sticky;
+      top: 90px;
+    }
+
+    .sidebar-card {
+      background: var(--fundo-claro);
+      border: 1px solid var(--borda);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+
+    .sidebar-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--azul-petroleo);
+      margin-bottom: 16px;
+    }
+
+    .toc-list {
+      list-style: none;
+    }
+
+    .toc-list li {
+      margin-bottom: 10px;
+    }
+
+    .toc-list a {
+      color: var(--texto-secundario);
+      text-decoration: none;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      transition: color 0.2s;
+    }
+
+    .toc-list a:hover { color: var(--azul-profundo); }
+
+    .toc-list a::before {
+      content: '→';
+      color: var(--laranja);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .sidebar-cta {
+      background: var(--azul-petroleo);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .sidebar-cta p {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .sidebar-cta a {
+      display: block;
+      background: var(--laranja);
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      padding: 12px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .sidebar-cta a:hover { opacity: 0.88; }
+
+    /* FOOTER */
+    footer {
+      background: var(--azul-petroleo);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 0.85rem;
+      margin-top: 60px;
+    }
+
+    footer a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: #fff; }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="/" class="logo-link">
+      <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="50" cy="42" r="28" fill="#1D9E75"/>
+        <ellipse cx="42" cy="38" rx="5" ry="6" fill="white"/>
+        <ellipse cx="58" cy="38" rx="5" ry="6" fill="white"/>
+        <circle cx="43" cy="39" r="3" fill="#0F2A3D"/>
+        <circle cx="59" cy="39" r="3" fill="#0F2A3D"/>
+        <circle cx="44" cy="38" r="1" fill="white"/>
+        <circle cx="60" cy="38" r="1" fill="white"/>
+        <path d="M30 62 Q24 75 20 88" stroke="#1D9E75" stroke-width="6" stroke-linecap="round"/>
+        <path d="M38 66 Q34 80 32 92" stroke="#1D9E75" stroke-width="6" stroke-linecap="round"/>
+        <path d="M50 68 Q50 82 50 94" stroke="#1D9E75" stroke-width="6" stroke-linecap="round"/>
+        <path d="M62 66 Q66 80 68 92" stroke="#1D9E75" stroke-width="6" stroke-linecap="round"/>
+        <path d="M70 62 Q76 75 80 88" stroke="#1D9E75" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text">Octara</span>
+    </a>
+    <a href="/" class="btn-header">Encontrar meu ar-condicionado →</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="article-hero">
+  <div class="article-tag">Guia Técnico</div>
+  <h1>O que é IDRS no ar-condicionado? Entenda o índice que define sua conta de luz</h1>
+  <p class="article-meta">
+    <span>Equipe Octara</span>·
+    <span>Leitura: 6 minutos</span>
+  </p>
+</section>
+
+<!-- LAYOUT -->
+<div class="article-layout">
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <article class="article-content">
+
+    <p>Quando você vai comprar um ar-condicionado, depara com uma sopa de siglas: BTU, kWh, EER, IDRS. A maioria das pessoas ignora todas e decide pelo preço. Algumas olham o BTU. Quase ninguém sabe o que é IDRS — e esse é exatamente o número que mais importa para o seu bolso no longo prazo.</p>
+
+    <h2 id="o-que-e">O que é IDRS</h2>
+
+    <p><strong>IDRS (Índice de Desempenho em Regime de Simulação)</strong> é um indicador criado pelo INMETRO que mede a eficiência real de um ar-condicionado ao longo de um ciclo de uso típico — não em condição de laboratório ideal, mas simulando como o aparelho se comporta no dia a dia: ligando, desligando, variando a carga de trabalho conforme a temperatura ambiente muda.</p>
+
+    <p>Em termos simples: o IDRS mede o quanto de frio o aparelho entrega por unidade de energia consumida, em condições reais de uso. Quanto maior o IDRS, mais eficiente é o aparelho — e isso se traduz diretamente em reais na sua conta de luz todo mês.</p>
+
+    <div class="destaque-box">
+      <p>Um aparelho com IDRS 8 é significativamente mais eficiente do que um com IDRS 5. Essa diferença aparece toda vez que você paga a conta de energia.</p>
+    </div>
+
+    <h2 id="idrs-vs-eer">Por que o IDRS é mais confiável que o EER</h2>
+
+    <p>Antes do IDRS, o indicador de eficiência energética usado era o EER (Energy Efficiency Ratio). O problema do EER é que ele mede a eficiência em uma única condição fixa: temperatura externa de 35°C e carga máxima de operação. É uma fotografia de um momento ideal, não um filme do uso real.</p>
+
+    <p>O IDRS surgiu justamente para corrigir isso. Ele considera múltiplos cenários de temperatura e carga parcial — porque na vida real seu ar-condicionado não opera sempre em capacidade máxima. Na maior parte do tempo ele opera em carga parcial, ajustando a potência conforme a necessidade. É nesse regime que a eficiência real aparece.</p>
+
+    <p>Diferente do antigo selo Procel — que ranqueava aparelhos por categoria sem revelar a diferença numérica entre eles — o IDRS expõe quem realmente economiza energia na vida real, com um número único e comparável entre fabricantes.</p>
+
+    <p>Aparelhos inverter se destacam muito mais no IDRS do que no EER, porque a tecnologia inverter foi projetada exatamente para operar com eficiência em carga parcial.</p>
+
+    <h2 id="como-interpretar">Como interpretar o IDRS na prática</h2>
+
+    <p>A escala do IDRS vai de 1 a 10, mas os aparelhos do mercado atual ficam entre 4 e 9. Use a tabela abaixo para orientar sua decisão:</p>
+
+    <div class="tabela-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Faixa de IDRS</th>
+            <th>Classificação Octara</th>
+            <th>Recomendação de Uso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Abaixo de 5</strong></td>
+            <td><span class="badge badge-entrada">Entrada</span></td>
+            <td>Uso esporádico (ex: quarto de visitas)</td>
+          </tr>
+          <tr>
+            <td><strong>5 a 6,9</strong></td>
+            <td><span class="badge badge-recomenda">✓ Octara Recomenda</span></td>
+            <td>Uso moderado / intermediário</td>
+          </tr>
+          <tr>
+            <td><strong>7 ou acima</strong></td>
+            <td><span class="badge badge-ouro">★ Octara Ouro</span></td>
+            <td>Uso intenso (quem dorme com ar ligado)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 id="por-que-fabricantes">Por que as fabricantes não explicam isso</h2>
+
+    <p>O IDRS foi instituído pela Portaria INMETRO 269/2021 e é de divulgação obrigatória. Ele aparece na etiqueta PROCEL colada no aparelho. Mas as fabricantes raramente destacam esse número nas suas comunicações de marketing.</p>
+
+    <p>O motivo é simples: o IDRS expõe diferenças de eficiência energética entre modelos de forma muito clara. Um número único, comparável, que qualquer pessoa consegue entender. Isso torna mais difícil vender um aparelho menos eficiente por um preço mais alto com base em argumentos vagos de "tecnologia avançada" ou "economia de energia" sem substância.</p>
+
+    <p>É mais conveniente falar em "até X% de economia" — uma promessa vaga, baseada em comparações com aparelhos antigos e condições ideais — do que expor o IDRS lado a lado com o da concorrência.</p>
+
+    <h2 id="a-conta">A conta que vale fazer</h2>
+
+    <p>Dois aparelhos de 12.000 BTUs, mesmo preço de compra. Um com IDRS 5, outro com IDRS 8. Usados 8 horas por dia, 30 dias por mês, na tarifa bandeira vermelha 2:</p>
+
+    <div class="conta-box">
+      <h3>Comparativo de custo mensal real — 12.000 BTUs</h3>
+      <div class="conta-comparativo">
+        <div class="conta-item">
+          <div class="label">Electrolux Color Adapt · IDRS 5,5</div>
+          <div class="valor">R$ 91,62</div>
+          <div class="subvalor">bandeira vermelha 2 · 8h/dia</div>
+        </div>
+        <div class="conta-item">
+          <div class="label">Daikin Full Inverter · IDRS 7,0</div>
+          <div class="valor">R$ 74,92</div>
+          <div class="subvalor">bandeira vermelha 2 · 8h/dia</div>
+        </div>
+      </div>
+      <div class="conta-economia">
+        Economia de <strong>R$ 16,70/mês</strong> · R$ 200/ano · R$ 601 em 3 anos
+      </div>
+      <p class="conta-nota">Base: tarifa vermelha 2 (R$ 0,7515/kWh) · Portaria INMETRO 269/2021 · ciclo de referência de 1.000h/ano</p>
+    </div>
+
+    <p>Quase R$ 30 por mês de diferença entre dois aparelhos do mesmo tamanho. Em 3 anos, isso cobre boa parte da diferença de preço entre os modelos. E é exatamente o tipo de informação que ninguém te dá na loja.</p>
+
+    <div class="cta-box">
+      <h3>Descubra o IDRS do seu próximo ar-condicionado</h3>
+      <p>A Octara analisa seu perfil de uso e recomenda os aparelhos com melhor eficiência energética real — incluindo o IDRS como critério central. Gratuito, sem cadastro.</p>
+      <a href="/" class="btn-cta">Encontrar meu ar-condicionado ideal →</a>
+    </div>
+
+    <!-- ASSINATURA -->
+    <div class="assinatura">
+      <div class="assinatura-avatar">
+        <svg width="24" height="24" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="42" r="28" fill="#1D9E75"/>
+          <ellipse cx="42" cy="38" rx="5" ry="6" fill="white"/>
+          <ellipse cx="58" cy="38" rx="5" ry="6" fill="white"/>
+          <circle cx="43" cy="39" r="3" fill="#0F2A3D"/>
+          <circle cx="59" cy="39" r="3" fill="#0F2A3D"/>
+          <path d="M30 62 Q24 75 20 88" stroke="#1D9E75" stroke-width="7" stroke-linecap="round"/>
+          <path d="M38 66 Q34 80 32 92" stroke="#1D9E75" stroke-width="7" stroke-linecap="round"/>
+          <path d="M50 68 Q50 82 50 94" stroke="#1D9E75" stroke-width="7" stroke-linecap="round"/>
+          <path d="M62 66 Q66 80 68 92" stroke="#1D9E75" stroke-width="7" stroke-linecap="round"/>
+          <path d="M70 62 Q76 75 80 88" stroke="#1D9E75" stroke-width="7" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="assinatura-info">
+        <div class="nome">Equipe Octara</div>
+        <div class="desc">Motor de decisão de compra. Informação qualificada para escolhas seguras.</div>
+      </div>
+    </div>
+
+  </article>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-card">
+      <h4>Neste artigo</h4>
+      <ul class="toc-list">
+        <li><a href="#o-que-e">O que é IDRS</a></li>
+        <li><a href="#idrs-vs-eer">IDRS vs EER: a diferença</a></li>
+        <li><a href="#como-interpretar">Como interpretar na prática</a></li>
+        <li><a href="#por-que-fabricantes">Por que as fabricantes omitem</a></li>
+        <li><a href="#a-conta">A conta que vale fazer</a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-cta">
+      <p>Não sabe qual ar-condicionado escolher? A Octara analisa seu perfil e recomenda os melhores.</p>
+      <a href="/">Usar a ferramenta grátis →</a>
+    </div>
+
+  </aside>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2025 Octara · <a href="/">octara.com.br</a> · Motor de decisão de compra</p>
+  <p style="margin-top:8px; font-size:0.78rem;">As recomendações da Octara são independentes e sem vínculo comercial com fabricantes.</p>
+</footer>
+
+</body>
+</html>

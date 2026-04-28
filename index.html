@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Octara — Decida melhor antes de gastar</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wer43ile86");
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --petrol:#0F2A3D; --deep:#123F5A; --orange:#E07A2F; --orange-dk:#C4681F;
+  --warm-white:#F9FAFB; --text-main:#1A1A1A; --text-sec:#6B7280; --border:#E5E7EB; --green:#1D9E75;
+}
+html { scroll-behavior: smooth; }
+body { font-family:'Inter',sans-serif; background:var(--petrol); color:#fff; min-height:100vh; }
+
+/* PAGE SWITCHING */
+.page { display:none; }
+.page.active { display:block; }
+
+/* ── SHARED HEADER ── */
+.site-header { background:var(--petrol); padding:1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; border-bottom:1px solid rgba(255,255,255,0.08); }
+.header-logo { display:flex; align-items:center; gap:8px; cursor:pointer; }
+.header-wordmark { font-size:18px; font-weight:500; color:#fff; letter-spacing:-0.3px; }
+.header-wordmark span { color:var(--orange); }
+.header-tagline { font-size:10px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:0.5px; }
+.header-nav { display:flex; gap:8px; align-items:center; }
+.nav-btn { padding:8px 16px; border-radius:8px; font-size:13px; font-weight:500; cursor:pointer; font-family:'Inter',sans-serif; border:1px solid rgba(255,255,255,0.2); background:transparent; color:rgba(255,255,255,0.7); transition:all 0.12s; }
+.nav-btn:hover { background:rgba(255,255,255,0.1); color:#fff; }
+.nav-btn.orange { background:var(--orange); color:#fff; border-color:var(--orange); }
+.nav-btn.orange:hover { background:var(--orange-dk); }
+
+/* ── HERO ── */
+.hero { min-height:calc(100vh - 60px); display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:3rem 1.5rem 4rem; position:relative; overflow:hidden; }
+.hero::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse 80% 60% at 50% 30%, #123F5A 0%, #0F2A3D 70%); z-index:0; }
+.hero-content { position:relative; z-index:1; max-width:600px; }
+.hero-logo { display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:2rem; }
+.hero-wordmark { font-family:'Inter',sans-serif; font-size:28px; font-weight:500; color:#fff; letter-spacing:-0.5px; }
+.hero-wordmark span { color:var(--orange); }
+.hero-eyebrow { font-size:11px; letter-spacing:2px; text-transform:uppercase; color:var(--orange); margin-bottom:1.25rem; font-weight:500; }
+.hero h1 { font-family:'Playfair Display',Georgia,serif; font-size:clamp(1.9rem,5vw,2.9rem); font-weight:500; line-height:1.2; color:#fff; margin-bottom:1rem; }
+.hero p { font-size:16px; color:rgba(255,255,255,0.6); line-height:1.7; margin-bottom:2rem; font-weight:300; }
+.pillars { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin-bottom:2.5rem; }
+.pillar { font-size:12px; padding:5px 12px; border:1px solid rgba(255,255,255,0.15); border-radius:20px; color:rgba(255,255,255,0.5); }
+.hero-buttons { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; }
+.btn-primary { display:inline-block; padding:14px 28px; background:var(--orange); color:#fff; border:none; border-radius:8px; font-size:15px; font-weight:500; cursor:pointer; font-family:'Inter',sans-serif; transition:background 0.15s,transform 0.1s; }
+.btn-primary:hover { background:var(--orange-dk); }
+.btn-secondary { display:inline-block; padding:14px 28px; background:transparent; color:#fff; border:1px solid rgba(255,255,255,0.3); border-radius:8px; font-size:15px; font-weight:500; cursor:pointer; font-family:'Inter',sans-serif; transition:all 0.15s; }
+.btn-secondary:hover { background:rgba(255,255,255,0.1); }
+.hero-note { margin-top:1rem; font-size:12px; color:rgba(255,255,255,0.3); }
+
+/* ── QUIZ ── */
+#quiz-wrap { background:var(--warm-white); min-height:calc(100vh - 60px); display:flex; align-items:flex-start; justify-content:center; padding:3rem 1.5rem 4rem; }
+.quiz-shell { width:100%; max-width:480px; }
+.quiz-logo { display:flex; align-items:center; gap:8px; margin-bottom:2rem; }
+.quiz-wordmark { font-family:'Inter',sans-serif; font-size:17px; font-weight:500; color:var(--petrol); letter-spacing:-0.3px; }
+.quiz-wordmark span { color:var(--orange); }
+.progress-wrap { margin-bottom:2rem; }
+.progress-track { height:2px; background:#E5E7EB; border-radius:2px; }
+.progress-fill { height:2px; background:var(--orange); border-radius:2px; transition:width 0.4s cubic-bezier(.4,0,.2,1); }
+.progress-label { font-size:11px; color:var(--text-sec); margin-top:6px; }
+.q-text { font-family:'Playfair Display',serif; font-size:22px; font-weight:500; color:var(--text-main); margin-bottom:6px; line-height:1.3; }
+.q-sub { font-size:13px; color:var(--text-sec); margin-bottom:1.5rem; line-height:1.5; }
+.options { display:flex; flex-direction:column; gap:9px; }
+.opt { padding:14px 16px; border:1px solid var(--border); border-radius:12px; cursor:pointer; font-size:15px; color:var(--text-main); background:#fff; text-align:left; transition:border-color 0.12s,background 0.12s,transform 0.1s; width:100%; font-family:'Inter',sans-serif; box-shadow:0 1px 2px rgba(0,0,0,0.04); }
+.opt:hover { border-color:#9CA3AF; background:#fafafa; }
+.opt:active { transform:scale(0.99); }
+.opt.selected { border:2px solid var(--orange); background:#FEF3EC; color:#7C3510; }
+.opt-sub { font-size:12px; color:var(--text-sec); margin-top:2px; }
+.opt.selected .opt-sub { color:#A0511E; }
+.back-btn { background:none; border:none; color:var(--text-sec); cursor:pointer; font-size:13px; margin-top:1.25rem; padding:0; text-decoration:underline; font-family:'Inter',sans-serif; }
+
+/* ── RESULTS ── */
+#results-wrap { background:var(--warm-white); padding:3rem 1.5rem 5rem; }
+.results-shell { max-width:540px; margin:0 auto; }
+.results-logo { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+.results-wordmark { font-size:17px; font-weight:500; color:var(--petrol); font-family:'Inter',sans-serif; }
+.results-wordmark span { color:var(--orange); }
+.results-tagline { font-size:11px; text-transform:uppercase; letter-spacing:1px; color:var(--text-sec); margin-bottom:1.5rem; }
+.divider { border:none; border-top:1px solid var(--border); margin:1rem 0 1.5rem; }
+.results-title { font-family:'Playfair Display',serif; font-size:26px; font-weight:500; color:var(--text-main); margin-bottom:4px; }
+.results-sub { font-size:13px; color:var(--text-sec); line-height:1.6; margin-bottom:1.75rem; }
+.budget-notice { background:#FFF7ED; border:1px solid #FED7AA; border-radius:12px; padding:14px 16px; margin-bottom:1.5rem; font-size:14px; color:#92400E; line-height:1.7; }
+.budget-notice strong { font-weight:500; }
+
+/* ── CARDS ── */
+.card { background:#fff; border:1px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:1rem; box-shadow:0 2px 8px rgba(0,0,0,0.05); transition:box-shadow 0.15s; }
+.card:hover { box-shadow:0 4px 16px rgba(0,0,0,0.09); }
+.card.top { border-color:var(--orange); border-width:1.5px; }
+.card.fora-orc { border-color:#FED7AA; border-width:1.5px; }
+.card-brand { font-size:11px; color:var(--text-sec); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+.card-name { font-family:'Playfair Display',serif; font-size:18px; font-weight:500; color:var(--text-main); line-height:1.2; margin-bottom:2px; }
+.card-btus { font-size:12px; color:var(--text-sec); margin-bottom:10px; }
+.selos { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:10px; }
+.selo { padding:3px 10px; border-radius:20px; font-size:11px; font-weight:500; }
+.selo-ouro { background:#FEF3EC; color:#7C3510; border:1px solid #E07A2F; }
+.selo-recomenda { background:#ECFDF5; color:#065F46; border:1px solid #1D9E75; }
+.selo-cb { background:#EFF6FF; color:#1E40AF; border:1px solid #93C5FD; }
+.selo-entrada { background:#F3F4F6; color:#374151; border:1px solid #D1D5DB; }
+.card-why { font-size:13px; color:var(--text-sec); line-height:1.7; margin-bottom:14px; padding:10px 14px; background:var(--warm-white); border-radius:8px; border-left:3px solid var(--orange); }
+.energia-destaque { background:var(--petrol); border-radius:10px; padding:14px 16px; margin-bottom:12px; display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.energia-label { font-size:11px; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:2px; }
+.energia-val { font-size:24px; font-weight:500; color:#fff; }
+.energia-note { font-size:10px; color:rgba(255,255,255,0.35); margin-top:2px; }
+.energia-range-label { font-size:10px; color:rgba(255,255,255,0.4); margin-bottom:1px; text-align:right; }
+.energia-range-val { font-size:14px; color:rgba(255,255,255,0.65); text-align:right; }
+.metrics { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px; margin-bottom:14px; }
+.metric { background:var(--warm-white); border-radius:8px; padding:9px 12px; }
+.metric-label { font-size:10px; color:#9CA3AF; margin-bottom:1px; text-transform:uppercase; letter-spacing:0.3px; }
+.metric-val { font-size:15px; font-weight:500; color:var(--text-main); }
+.metric-unit { font-size:10px; color:var(--text-sec); font-weight:400; }
+.card-footer { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; padding-top:12px; border-top:1px solid var(--border); }
+.price-main { font-size:22px; font-weight:500; color:var(--text-main); }
+.price-label { font-size:11px; color:var(--text-sec); margin-top:1px; }
+.btn-oferta { padding:11px 20px; background:var(--orange); color:#fff; border:none; border-radius:8px; font-size:14px; font-weight:500; cursor:pointer; white-space:nowrap; font-family:'Inter',sans-serif; transition:background 0.12s; text-decoration:none; display:inline-block; }
+.btn-oferta:hover { background:var(--orange-dk); }
+.alert-box { background:#FFFBEB; border:1px solid #FCD34D; border-radius:10px; padding:12px 14px; font-size:12px; color:#78350F; line-height:1.7; margin-top:1rem; }
+.restart-wrap { text-align:center; margin-top:2rem; }
+.restart-wrap button { background:none; border:none; color:var(--text-sec); cursor:pointer; font-size:13px; text-decoration:underline; font-family:'Inter',sans-serif; }
+
+/* ── CATÁLOGO ── */
+#catalogo-wrap { background:var(--warm-white); min-height:calc(100vh - 60px); }
+.cat-hero { background:var(--petrol); padding:2rem 1.5rem 2.5rem; text-align:center; }
+.cat-hero h2 { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2.2rem); font-weight:500; color:#fff; margin-bottom:6px; }
+.cat-hero p { font-size:14px; color:rgba(255,255,255,0.55); line-height:1.6; }
+.filters-wrap { background:#fff; border-bottom:1px solid var(--border); padding:1.25rem 1.5rem; position:sticky; top:0; z-index:10; }
+.filters-inner { max-width:1100px; margin:0 auto; display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+.filter-group { display:flex; flex-direction:column; gap:4px; min-width:130px; }
+.filter-group label { font-size:10px; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-sec); font-weight:500; }
+.filter-group select { padding:8px 10px; border:1px solid var(--border); border-radius:8px; font-size:13px; color:var(--text-main); background:#fff; font-family:'Inter',sans-serif; cursor:pointer; }
+.filter-group select:focus { outline:none; border-color:var(--orange); }
+.filter-checks { display:flex; gap:8px; flex-wrap:wrap; align-items:center; padding-top:18px; }
+.check-pill { display:flex; align-items:center; gap:5px; padding:7px 12px; border:1px solid var(--border); border-radius:20px; font-size:12px; color:var(--text-sec); cursor:pointer; background:#fff; transition:all 0.12s; user-select:none; }
+.check-pill input { display:none; }
+.check-pill.active { background:#FEF3EC; border-color:var(--orange); color:#7C3510; }
+.filters-meta { max-width:1100px; margin:0.75rem auto 0; font-size:12px; color:var(--text-sec); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+.btn-limpar { background:none; border:none; color:var(--orange); cursor:pointer; font-size:12px; font-family:'Inter',sans-serif; text-decoration:underline; padding:0; }
+.cat-grid-wrap { max-width:1100px; margin:0 auto; padding:1.5rem 1.5rem 4rem; }
+.cat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1rem; }
+.cat-card { background:#fff; border:1px solid var(--border); border-radius:16px; padding:1.25rem; box-shadow:0 2px 6px rgba(0,0,0,0.04); transition:box-shadow 0.15s,transform 0.15s; display:flex; flex-direction:column; }
+.cat-card:hover { box-shadow:0 6px 20px rgba(0,0,0,0.09); transform:translateY(-1px); }
+.cat-features { display:flex; flex-wrap:wrap; gap:5px; margin-bottom:12px; }
+.feature { font-size:11px; padding:2px 8px; background:var(--warm-white); border-radius:20px; color:var(--text-sec); border:1px solid var(--border); }
+.feature.destaque { background:#ECFDF5; color:#065F46; border-color:#A7F3D0; }
+.energia-bloco { background:var(--petrol); border-radius:8px; padding:10px 12px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
+.eb-label { font-size:9px; color:rgba(255,255,255,0.45); text-transform:uppercase; letter-spacing:0.3px; margin-bottom:1px; }
+.eb-val { font-size:18px; font-weight:500; color:#fff; }
+.eb-note { font-size:9px; color:rgba(255,255,255,0.3); margin-top:1px; }
+.eb-rl { font-size:9px; color:rgba(255,255,255,0.4); text-align:right; }
+.eb-rv { font-size:12px; color:rgba(255,255,255,0.6); text-align:right; }
+.cat-metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:12px; }
+.cat-metric { background:var(--warm-white); border-radius:6px; padding:7px 10px; }
+.cm-label { font-size:9px; color:#9CA3AF; text-transform:uppercase; letter-spacing:0.3px; margin-bottom:1px; }
+.cm-val { font-size:14px; font-weight:500; color:var(--text-main); }
+.cm-unit { font-size:9px; color:var(--text-sec); }
+.cat-footer { margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:8px; padding-top:10px; border-top:1px solid var(--border); flex-wrap:wrap; }
+.cat-price { font-size:19px; font-weight:500; color:var(--text-main); }
+.cat-price-label { font-size:10px; color:var(--text-sec); margin-top:1px; }
+.empty { text-align:center; padding:4rem 1rem; color:var(--text-sec); grid-column:1/-1; }
+.empty-title { font-family:'Playfair Display',serif; font-size:20px; margin-bottom:8px; color:var(--text-main); }
+.quiz-cta-block { background:var(--petrol); border-radius:16px; padding:1.5rem; text-align:center; margin-top:0.5rem; grid-column:1/-1; }
+.quiz-cta-block p { font-size:14px; color:rgba(255,255,255,0.65); margin-bottom:1rem; line-height:1.6; }
+.quiz-cta-block strong { color:#fff; font-weight:500; }
+
+.slide-in { animation:slideIn 0.25s ease; }
+@keyframes slideIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@media(max-width:480px){ .hero h1{font-size:1.75rem;} .energia-destaque{flex-direction:column;align-items:flex-start;} .energia-range-label,.energia-range-val{text-align:left;} .filter-group{min-width:120px;flex:1;} .cat-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+
+<header class="site-header" id="site-header" style="display:none">
+  <div class="header-logo" onclick="irPara('home')">
+    <svg width="28" height="28" viewBox="0 0 44 44" fill="none">
+      <ellipse cx="22" cy="18" rx="12" ry="11" fill="#1D9E75"/>
+      <circle cx="18" cy="15" r="2" fill="white"/><circle cx="26" cy="15" r="2" fill="white"/>
+      <circle cx="18.8" cy="15.5" r="0.9" fill="#0F2A3D"/><circle cx="26.8" cy="15.5" r="0.9" fill="#0F2A3D"/>
+      <path d="M19 20 Q22 22.5 25 20" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
+      <path d="M11 26 Q9 30 11 34 Q12 37 10 40" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M15 29 Q14 33 15 37 Q15.5 40 13.5 42" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M19 30 Q19 35 19 39 Q19 42 18 44" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M23 30 Q23.5 35 23 39 Q23 42 24 44" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M27 29 Q28 33 27.5 37 Q27 40 29 42" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M31 27 Q33 31 32 35 Q31.5 38 33.5 40" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M10 19 Q6 17 4 20 Q3 23 5 25" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+      <path d="M34 19 Q38 17 40 20 Q41 23 39 25" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <div class="header-wordmark">octa<span>ra</span></div>
+      <div class="header-tagline">motor de decisão de compra</div>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <button class="nav-btn" onclick="irPara('catalogo')" id="nav-catalogo">Explorar produtos</button>
+    <button class="nav-btn orange" onclick="irPara('quiz')" id="nav-quiz">Fazer o quiz</button>
+  </nav>
+</header>
+
+<!-- HOME -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-logo">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <ellipse cx="22" cy="18" rx="12" ry="11" fill="#1D9E75"/>
+          <circle cx="18" cy="15" r="2" fill="white"/><circle cx="26" cy="15" r="2" fill="white"/>
+          <circle cx="18.8" cy="15.5" r="0.9" fill="#0F2A3D"/><circle cx="26.8" cy="15.5" r="0.9" fill="#0F2A3D"/>
+          <path d="M19 20 Q22 22.5 25 20" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/>
+          <path d="M11 26 Q9 30 11 34 Q12 37 10 40" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M15 29 Q14 33 15 37 Q15.5 40 13.5 42" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M19 30 Q19 35 19 39 Q19 42 18 44" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M23 30 Q23.5 35 23 39 Q23 42 24 44" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M27 29 Q28 33 27.5 37 Q27 40 29 42" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M31 27 Q33 31 32 35 Q31.5 38 33.5 40" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M10 19 Q6 17 4 20 Q3 23 5 25" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M34 19 Q38 17 40 20 Q41 23 39 25" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        </svg>
+        <div class="hero-wordmark">octa<span>ra</span></div>
+      </div>
+      <div class="hero-eyebrow">motor de decisão de compra</div>
+      <h1>Descubra o ar-condicionado ideal para você</h1>
+      <p>Sem achismo. Com lógica.<br>A Octara analisa seu contexto e entrega uma escolha justificada — em menos de 2 minutos.</p>
+      <div class="pillars">
+        <span class="pillar">Análise inteligente</span>
+        <span class="pillar">Custo real de uso</span>
+        <span class="pillar">Decisão com confiança</span>
+      </div>
+      <div class="hero-buttons">
+        <button class="btn-primary" onclick="irPara('quiz')">Começar análise</button>
+        <button class="btn-secondary" onclick="irPara('catalogo')">Explorar produtos</button>
+      </div>
+      <div class="hero-note">8 perguntas · sem cadastro · gratuito</div>
+    </div>
+  </section>
+</div>
+
+<!-- QUIZ -->
+<div id="page-quiz" class="page">
+  <div id="quiz-wrap">
+    <div class="quiz-shell" id="quiz-app"></div>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div id="page-results" class="page">
+  <div id="results-wrap">
+    <div class="results-shell" id="results-app"></div>
+  </div>
+</div>
+
+<!-- CATÁLOGO -->
+<div id="page-catalogo" class="page">
+  <div id="catalogo-wrap">
+    <div class="cat-hero">
+      <h2>Explorar produtos</h2>
+      <p>Filtre, compare e fuçe à vontade. Todos os aparelhos do nosso banco, com dados reais.</p>
+    </div>
+    <div class="filters-wrap">
+      <div class="filters-inner">
+        <div class="filter-group">
+          <label>BTUs</label>
+          <select id="f-btus" onchange="aplicarFiltros()">
+            <option value="">Todos</option>
+            <option value="9000">9.000 BTUs</option>
+            <option value="12000">12.000 BTUs</option>
+            <option value="18000">18.000 BTUs</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Fabricante</label>
+          <select id="f-fab" onchange="aplicarFiltros()">
+            <option value="">Todos</option>
+            <option value="LG">LG</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Daikin">Daikin</option>
+            <option value="Springer Midea">Springer Midea</option>
+            <option value="Gree">Gree</option>
+            <option value="Electrolux">Electrolux</option>
+            <option value="Elgin">Elgin</option>
+            <option value="TCL">TCL</option>
+            <option value="Consul">Consul</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Preço máximo</label>
+          <select id="f-preco" onchange="aplicarFiltros()">
+            <option value="">Sem limite</option>
+            <option value="2000">Até R$ 2.000</option>
+            <option value="2500">Até R$ 2.500</option>
+            <option value="3000">Até R$ 3.000</option>
+            <option value="4000">Até R$ 4.000</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Ordenar por</label>
+          <select id="f-ordem" onchange="aplicarFiltros()">
+            <option value="idrs">Maior eficiência (IDRS)</option>
+            <option value="kwh">Menor consumo anual</option>
+            <option value="preco_asc">Menor preço</option>
+            <option value="preco_desc">Maior preço</option>
+          </select>
+        </div>
+        <div class="filter-checks">
+          <label class="check-pill" id="pill-wifi" onclick="togglePill('wifi')"><input type="checkbox">Wi-Fi</label>
+          <label class="check-pill" id="pill-silencioso" onclick="togglePill('silencioso')"><input type="checkbox">Silencioso</label>
+          <label class="check-pill" id="pill-maresia" onclick="togglePill('maresia')"><input type="checkbox">Anti-maresia</label>
+          <label class="check-pill" id="pill-ia" onclick="togglePill('ia')"><input type="checkbox">IA</label>
+        </div>
+      </div>
+      <div class="filters-meta">
+        <span id="meta-count"></span>
+        <button class="btn-limpar" onclick="limparFiltros()">Limpar filtros</button>
+      </div>
+    </div>
+    <div class="cat-grid-wrap">
+      <div class="cat-grid" id="cat-grid"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const POLVO = `<svg width="28" height="28" viewBox="0 0 44 44" fill="none"><ellipse cx="22" cy="18" rx="12" ry="11" fill="#1D9E75"/><circle cx="18" cy="15" r="2" fill="white"/><circle cx="26" cy="15" r="2" fill="white"/><circle cx="18.8" cy="15.5" r="0.9" fill="#0F2A3D"/><circle cx="26.8" cy="15.5" r="0.9" fill="#0F2A3D"/><path d="M19 20 Q22 22.5 25 20" stroke="white" stroke-width="1" stroke-linecap="round" fill="none"/><path d="M11 26 Q9 30 11 34 Q12 37 10 40" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M15 29 Q14 33 15 37 Q15.5 40 13.5 42" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M19 30 Q19 35 19 39 Q19 42 18 44" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M23 30 Q23.5 35 23 39 Q23 42 24 44" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M27 29 Q28 33 27.5 37 Q27 40 29 42" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M31 27 Q33 31 32 35 Q31.5 38 33.5 40" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M10 19 Q6 17 4 20 Q3 23 5 25" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M34 19 Q38 17 40 20 Q41 23 39 25" stroke="#1D9E75" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>`;
+
+const LINHAS={PL001:{fab:"LG",linha:"Dual Inverter Voice",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL002:{fab:"LG",linha:"Dual Inverter Compact",wifi:false,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL003:{fab:"Samsung",linha:"Wind Free AI Wi-Fi",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL004:{fab:"Electrolux",linha:"Color Adapt",wifi:false,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:false},PL005:{fab:"Springer Midea",linha:"Xtreme Save Connect",wifi:true,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:false},PL006:{fab:"Springer Midea",linha:"Airvolution Connect",wifi:true,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL007:{fab:"Gree",linha:"G-Top Auto Inverter",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:false},PL008:{fab:"Gree",linha:"G-Diamond Auto Inverter",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL009:{fab:"Daikin",linha:"Ecoswing Smart Gold",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL010:{fab:"Daikin",linha:"Full Inverter",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL011:{fab:"Elgin",linha:"Eco Inverter II",wifi:true,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:false},PL012:{fab:"Elgin",linha:"Eco Inverter III",wifi:true,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:false},PL013:{fab:"TCL",linha:"T-Pro 2.0",wifi:true,ia:false,inverter:true,maresia:true,garantia_c:120,silencioso:true},PL014:{fab:"Springer Midea",linha:"AI Ecomaster",wifi:true,ia:true,inverter:true,maresia:true,garantia_c:120,silencioso:false},PL015:{fab:"Consul",linha:"Triple Inverter EconoMaxi",wifi:false,ia:false,inverter:true,maresia:true,garantia_c:36,silencioso:false},PL016:{fab:"Consul",linha:"Triple Inverter Cobre",wifi:false,ia:false,inverter:true,maresia:true,garantia_c:36,silencioso:false}};
+
+const PRODUTOS=[{id:"AC001",pl:"PL001",btus:9000,kwh:363.3,idrs:6.0,p:1791},{id:"AC002",pl:"PL001",btus:12000,kwh:484.6,idrs:6.0,p:2129},{id:"AC003",pl:"PL001",btus:18000,kwh:766.43,idrs:7.0,p:2999},{id:"AC004",pl:"PL002",btus:9000,kwh:396.4,idrs:null,p:1784},{id:"AC005",pl:"PL002",btus:12000,kwh:484.38,idrs:null,p:2085},{id:"AC006",pl:"PL002",btus:18000,kwh:836.2,idrs:null,p:3039},{id:"AC007",pl:"PL003",btus:9000,kwh:null,idrs:6.0,p:1989},{id:"AC008",pl:"PL003",btus:12000,kwh:null,idrs:6.0,p:2058},{id:"AC009",pl:"PL003",btus:18000,kwh:null,idrs:6.0,p:3099},{id:"AC010",pl:"PL004",btus:9000,kwh:397,idrs:null,p:1619},{id:"AC011",pl:"PL004",btus:12000,kwh:529,idrs:null,p:1739},{id:"AC012",pl:"PL004",btus:18000,kwh:793,idrs:null,p:2437},{id:"AC013",pl:"PL005",btus:9000,kwh:366,idrs:6.0,p:1846},{id:"AC014",pl:"PL005",btus:12000,kwh:484,idrs:6.0,p:2488},{id:"AC015",pl:"PL005",btus:18000,kwh:651,idrs:6.7,p:3499},{id:"AC016",pl:"PL006",btus:9000,kwh:396,idrs:5.5,p:1798},{id:"AC017",pl:"PL006",btus:12000,kwh:501.2,idrs:5.8,p:2251},{id:"AC018",pl:"PL006",btus:18000,kwh:751,idrs:5.8,p:3108},{id:"AC019",pl:"PL007",btus:9000,kwh:395.7,idrs:5.51,p:1746},{id:"AC020",pl:"PL007",btus:12000,kwh:482.6,idrs:6.02,p:2069},{id:"AC021",pl:"PL007",btus:18000,kwh:723,idrs:6.01,p:3096},{id:"AC022",pl:"PL008",btus:9000,kwh:359,idrs:6.07,p:2099},{id:"AC023",pl:"PL008",btus:12000,kwh:482.49,idrs:6.02,p:2978},{id:"AC024",pl:"PL008",btus:18000,kwh:686.1,idrs:6.35,p:4193},{id:"AC025",pl:"PL009",btus:9000,kwh:262.6,idrs:8.3,p:2906},{id:"AC026",pl:"PL009",btus:12000,kwh:350,idrs:8.3,p:null,status:"baixa"},{id:"AC027",pl:"PL009",btus:18000,kwh:573.2,idrs:7.6,p:null,status:"baixa"},{id:"AC028",pl:"PL010",btus:9000,kwh:283.4,idrs:7.7,p:2699},{id:"AC029",pl:"PL010",btus:12000,kwh:415.4,idrs:7.0,p:3259},{id:"AC030",pl:"PL010",btus:18000,kwh:682,idrs:6.4,p:2836},{id:"AC031",pl:"PL011",btus:9000,kwh:381,idrs:null,p:1799},{id:"AC032",pl:"PL011",btus:12000,kwh:502,idrs:null,p:1949},{id:"AC033",pl:"PL011",btus:18000,kwh:664,idrs:null,p:2416},{id:"AC034",pl:"PL012",btus:9000,kwh:327,idrs:null,p:1599},{id:"AC035",pl:"PL012",btus:12000,kwh:415,idrs:null,p:1899,status:"baixa"},{id:"AC037",pl:"PL013",btus:9000,kwh:386,idrs:5.59,p:1649},{id:"AC038",pl:"PL013",btus:12000,kwh:508,idrs:5.5,p:1999},{id:"AC039",pl:"PL013",btus:18000,kwh:769,idrs:5.8,p:2698},{id:"AC040",pl:"PL014",btus:9000,kwh:286.2,idrs:null,p:1747},{id:"AC041",pl:"PL014",btus:12000,kwh:382.5,idrs:7.6,p:2123},{id:"AC042",pl:"PL014",btus:18000,kwh:573.7,idrs:7.6,p:2499},{id:"AC043",pl:"PL015",btus:9000,kwh:311,idrs:null,p:3000},{id:"AC044",pl:"PL015",btus:12000,kwh:442,idrs:null,p:2499},{id:"AC045",pl:"PL016",btus:9000,kwh:396,idrs:null,p:2099},{id:"AC046",pl:"PL016",btus:12000,kwh:529,idrs:null,p:2198}];
+
+const ORC_RANGES={ate2000:[0,2000],ate2500:[0,2500],ate3000:[0,3000],ate4000:[0,4000],semLimite:[0,99999]};
+const ORC_LABELS={ate2000:"R$ 2.000",ate2500:"R$ 2.500",ate3000:"R$ 3.000",ate4000:"R$ 4.000",semLimite:null};
+const TV=0.5615,TV2=0.7515,CICLO=1000,HD=8,DM=30;
+
+function calcEnergia(kwh){
+  if(!kwh) return null;
+  const m=(kwh/CICLO)*HD*DM;
+  const fmt=n=>n.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2});
+  return{kwh_mes:m.toLocaleString("pt-BR",{minimumFractionDigits:1,maximumFractionDigits:1}),verde:fmt(m*TV),vermelha2:fmt(m*TV2)};
+}
+
+// ── NAVEGAÇÃO ──
+function irPara(pagina){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+pagina).classList.add('active');
+  const header=document.getElementById('site-header');
+  header.style.display = pagina==='home' ? 'none' : 'flex';
+  window.scrollTo(0,0);
+  if(pagina==='catalogo') aplicarFiltros();
+  if(pagina==='quiz') { answers={}; step=0; renderQuiz(document.getElementById('quiz-app')); }
+}
+
+// ── QUIZ ──
+const QUESTIONS=[{id:"tamanho",text:"Qual é o tamanho do ambiente?",sub:"Uma estimativa já resolve.",opts:[{val:"pequeno",label:"Pequeno",sub:"até 12 m²"},{val:"medio",label:"Médio",sub:"até 20 m²"},{val:"grande",label:"Grande",sub:"acima de 20 m²"}]},{id:"sol",text:"O ambiente recebe sol direto?",sub:"Sol direto exige mais potência do aparelho.",opts:[{val:"pouco",label:"Pouco ou nenhum",sub:"sombreado ou janelas ao sul"},{val:"moderado",label:"Sol moderado",sub:"sol da manhã ou da tarde"},{val:"muito",label:"Muito sol direto",sub:"fachada oeste ou sol o dia todo"}]},{id:"pessoas",text:"Quantas pessoas usam o ambiente ao mesmo tempo?",sub:"Cada pessoa adiciona carga térmica.",opts:[{val:"1",label:"1 pessoa",sub:"uso individual"},{val:"2",label:"2 pessoas",sub:"casal ou dois usuários"},{val:"3",label:"3 ou mais",sub:"família ou grupo"}]},{id:"uso",text:"Qual é o principal tipo de uso?",sub:"Isso define qual tecnologia faz mais sentido.",opts:[{val:"dormir",label:"Dormir",sub:"uso noturno — silêncio é prioridade"},{val:"trabalhar",label:"Trabalhar ou estudar",sub:"uso diurno contínuo — eficiência importa"},{val:"intenso",label:"Uso intenso ao longo do dia",sub:"ar ligado a maior parte do tempo"}]},{id:"orcamento",text:"Qual é o seu orçamento para a compra?",sub:"Os aparelhos do nosso banco partem de R$ 1.600 — as faixas refletem o que você realmente vai encontrar.",opts:[{val:"ate2000",label:"Até R$ 2.000",sub:"opções de entrada com boa eficiência"},{val:"ate2500",label:"Até R$ 2.500",sub:"melhor custo-benefício na maioria das categorias"},{val:"ate3000",label:"Até R$ 3.000",sub:"acesso a modelos mais silenciosos e tecnológicos"},{val:"ate4000",label:"Até R$ 4.000",sub:"linha premium — eficiência máxima"},{val:"semLimite",label:"Sem limite definido",sub:"quero o melhor"}]},{id:"ruido",text:"Você tem sensibilidade a ruído?",sub:"Alguns modelos são significativamente mais silenciosos.",opts:[{val:"alto",label:"Muito importante",sub:"quero o mais silencioso possível"},{val:"normal",label:"Normal",sub:"ruído leve não me incomoda"},{val:"nao",label:"Não me importo",sub:"silêncio não é prioridade"}]},{id:"maresia",text:"O ambiente é próximo ao mar?",sub:"Maresia corrói componentes — alguns modelos têm proteção específica.",opts:[{val:"sim",label:"Sim, perto do mar",sub:"até 3 km da orla"},{val:"nao",label:"Não",sub:"ambiente urbano ou distante do litoral"}]},{id:"prioridade",text:"O que é mais importante para você?",sub:"Define o peso final da nossa curadoria.",opts:[{val:"economia",label:"Economizar energia",sub:"menor conta de luz no longo prazo"},{val:"preco",label:"Pagar menos agora",sub:"menor custo de aquisição"},{val:"equilibrio",label:"Equilíbrio",sub:"melhor custo-benefício geral"}]}];
+
+let answers={},step=0,transitioning=false;
+
+function calcBTU(a){const base={pequeno:7500,medio:10000,grande:16000}[a.tamanho]||10000;const sol={pouco:0,moderado:800,muito:2000}[a.sol]||0;const pess={1:0,2:600,3:1200}[a.pessoas]||0;const raw=base+sol+pess;return raw<=9000?9000:raw<=14000?12000:18000;}
+function getFallbacks(t){return t===9000?[9000,12000]:t===12000?[12000,9000,18000]:[18000,12000];}
+function getSelos(p,l,a){const s=[];if(p.idrs>=7)s.push({label:"Octara Ouro",cls:"selo-ouro"});else if(p.idrs>=5)s.push({label:"Octara Recomenda",cls:"selo-recomenda"});if(a.prioridade==="equilibrio"&&p.idrs>=5&&p.p)s.push({label:"Melhor custo-benefício",cls:"selo-cb"});if(p.idrs&&p.idrs<7&&p.idrs>=5&&!s.find(x=>x.cls==="selo-recomenda"))s.push({label:"Inverter de entrada",cls:"selo-entrada"});return s;}
+
+function scoreProduct(p,l,a){if(p.status==="inativo"||p.status==="descontinuado")return -999;let s=50;if(p.kwh)s+=Math.max(0,(900-p.kwh)/9);if(l.inverter)s+=15;if(p.idrs>=7)s+=20;else if(p.idrs>=5)s+=8;if(l.garantia_c>=120)s+=10;if(a.ruido==="alto"&&l.silencioso)s+=25;if(a.ruido==="alto"&&!l.silencioso)s-=15;if(a.maresia==="sim"&&l.maresia)s+=20;if(a.maresia==="sim"&&!l.maresia)s-=30;if(a.uso==="dormir"&&l.silencioso)s+=15;if(a.uso==="intenso"&&l.inverter)s+=10;if(a.prioridade==="economia"&&p.kwh)s+=Math.max(0,(700-p.kwh)/6);if(a.prioridade==="preco"&&p.p)s+=Math.max(0,(4000-p.p)/80);if(a.prioridade==="equilibrio"){if(p.kwh)s+=Math.max(0,(700-p.kwh)/12);if(p.p)s+=Math.max(0,(3500-p.p)/100);}const[,pmax]=ORC_RANGES[a.orcamento]||[0,99999];if(p.p&&p.p>pmax)s-=40;if(p.p&&pmax<99999&&p.p<=pmax)s+=Math.max(0,(p.p/pmax)*15);if(!p.p)s-=8;return Math.round(s);}
+
+function gerarJustificativa(p,l,a){const pts=[];if(a.maresia==="sim"&&l.maresia)pts.push("tem proteção contra maresia, essencial para ambientes litorâneos");if(a.ruido==="alto"&&l.silencioso)pts.push("é um dos mais silenciosos da categoria");if(a.uso==="dormir"&&l.silencioso)pts.push("ideal para uso noturno pelo baixo nível de ruído");if(a.prioridade==="economia"&&p.kwh)pts.push(`consome ${Math.round(p.kwh)} kWh/ano — eficiência acima da média para ${p.btus/1000}k BTUs`);if(a.prioridade==="preco"&&p.p)pts.push(`menor custo de aquisição na faixa de ${p.btus/1000}k BTUs`);if(a.prioridade==="equilibrio")pts.push("equilíbrio sólido entre preço de compra e custo de operação");if(p.idrs>=7)pts.push("eficiência premium certificada — entre os mais econômicos do mercado");if(l.garantia_c>=120)pts.push("10 anos de garantia no compressor");if(l.ia)pts.push("inteligência artificial para ajuste automático de temperatura");if(pts.length===0)pts.push("boa disponibilidade e eficiência compatível com o perfil identificado");return pts.map((x,i)=>i===0?x.charAt(0).toUpperCase()+x.slice(1):x).join("; ")+".";}
+
+function selectAndAdvance(qid,val){if(transitioning)return;answers[qid]=val;renderQuiz(document.getElementById("quiz-app"));transitioning=true;setTimeout(()=>{step++;transitioning=false;if(step<QUESTIONS.length)renderQuiz(document.getElementById("quiz-app"));else showResults();},300);}
+function goBack(){step--;renderQuiz(document.getElementById("quiz-app"));}
+
+function renderQuiz(app){
+  const q=QUESTIONS[step];const pct=Math.round((step/QUESTIONS.length)*100);
+  const wrap=document.createElement("div");wrap.className="slide-in";
+  wrap.innerHTML=`<div class="quiz-logo">${POLVO}<div class="quiz-wordmark">octa<span>ra</span></div></div><div class="progress-wrap"><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-label">pergunta ${step+1} de ${QUESTIONS.length}</div></div><div class="q-text">${q.text}</div><div class="q-sub">${q.sub}</div><div class="options" id="opts"></div>${step>0?`<button class="back-btn" onclick="goBack()">Voltar</button>`:""}`;
+  app.innerHTML="";app.appendChild(wrap);
+  const opts=document.getElementById("opts");
+  q.opts.forEach(o=>{const btn=document.createElement("button");btn.className="opt"+(answers[q.id]===o.val?" selected":"");btn.innerHTML=`<div>${o.label}</div>${o.sub?`<div class="opt-sub">${o.sub}</div>`:""}`;btn.onclick=()=>selectAndAdvance(q.id,o.val);opts.appendChild(btn);});
+}
+
+function showResults(){
+  irPara('results');
+  const app=document.getElementById("results-app");
+  const targetBtu=calcBTU(answers);let top3=[];
+  for(const btu of getFallbacks(targetBtu)){const cands=PRODUTOS.map(p=>({...p,...LINHAS[p.pl],_score:scoreProduct(p,LINHAS[p.pl],answers)})).filter(p=>p.btus===btu&&p._score>-900).sort((a,b)=>b._score-a._score);top3=top3.concat(cands);if(top3.length>=3)break;}
+  top3=top3.slice(0,3);
+  const[,pmax]=ORC_RANGES[answers.orcamento]||[0,99999];
+  const orcLabel=ORC_LABELS[answers.orcamento];
+  const tLabel={pequeno:"até 12 m²",medio:"até 20 m²",grande:"acima de 20 m²"}[answers.tamanho];
+  const todosForam=pmax<99999&&top3.every(p=>p.p&&p.p>pmax);
+  const algumFora=pmax<99999&&top3.some(p=>p.p&&p.p>pmax);
+  let html=`<div class="results-logo">${POLVO}<div class="results-wordmark">octa<span>ra</span></div></div><div class="results-tagline">motor de decisão de compra</div><div class="divider"></div><div class="results-title">Sua escolha ideal</div><div class="results-sub">Ambiente ${tLabel} &middot; ${targetBtu/1000}k BTUs calculados${orcLabel?' &middot; orçamento até '+orcLabel:''}</div>`;
+  if(todosForam)html+=`<div class="budget-notice">Não encontramos opções dentro do orçamento de <strong>${orcLabel}</strong> para o seu perfil. Isso acontece porque aparelhos de <strong>${targetBtu/1000}k BTUs</strong> costumam partir de valores um pouco acima dessa faixa. As recomendações abaixo são as mais próximas do seu orçamento, com a melhor relação de eficiência disponível.</div>`;
+  else if(algumFora)html+=`<div class="budget-notice">A maioria das recomendações está dentro do seu orçamento. Uma delas ficou um pouco acima de <strong>${orcLabel}</strong> — incluímos porque, pelo perfil do seu ambiente, ela entrega algo que as opções mais baratas não conseguem oferecer. Você decide se vale a diferença.</div>`;
+  top3.forEach((p,i)=>{const l=LINHAS[p.pl];const fora=p.p&&pmax<99999&&p.p>pmax;const selos=getSelos(p,l,answers);const energia=calcEnergia(p.kwh);const precoTxt=p.p?`R$ ${p.p.toLocaleString("pt-BR")}`:"consultar disponibilidade";const just=gerarJustificativa(p,l,answers);const idrsText=p.idrs?p.idrs.toFixed(1):"n/d";const cardClass=fora?"card fora-orc":i===0?"card top":"card";const url=`https://www.google.com.br/search?q=${encodeURIComponent(p.fab+' '+p.linha+' '+(p.btus/1000)+'000 BTUs')}&tbm=shop`;
+  html+=`<div class="${cardClass}"><div class="card-brand">${p.fab}</div><div class="card-name">${p.linha}</div><div class="card-btus">${p.btus/1000}k BTUs</div>${selos.length?`<div class="selos">${selos.map(s=>`<span class="selo ${s.cls}">${s.label}</span>`).join("")}</div>`:""}<div class="card-why">${just}</div>${energia?`<div class="energia-destaque"><div><div class="energia-label">Custo estimado por mês</div><div class="energia-val">R$ ${energia.verde}</div><div class="energia-note">bandeira verde &middot; 8h/dia &middot; base INMETRO</div></div><div><div class="energia-range-label">Bandeira vermelha 2</div><div class="energia-range-val">até R$ ${energia.vermelha2}/mês</div><div class="energia-range-label" style="margin-top:3px">${energia.kwh_mes} kWh/mês</div></div></div>`:`<div class="metric" style="margin-bottom:12px;background:#f3f4f6;border-radius:8px;padding:10px 12px"><div class="metric-label">Custo mensal de energia</div><div class="metric-val" style="font-size:13px;color:#9CA3AF">dado não disponível</div></div>`}<div class="metrics"><div class="metric"><div class="metric-label">Consumo anual</div><div class="metric-val">${p.kwh?Math.round(p.kwh):'—'} <span class="metric-unit">${p.kwh?'kWh':''}</span></div></div><div class="metric"><div class="metric-label">IDRS</div><div class="metric-val">${idrsText}</div></div></div><div class="card-footer"><div><div class="price-main">${precoTxt}</div><div class="price-label">${fora?'<span style="color:#B45309">acima do orçamento informado</span>':'preço de referência'}</div></div><a class="btn-oferta" href="${url}" target="_blank" rel="noopener">Ver oferta</a></div></div>`;});
+  html+=`<div class="alert-box"><strong>Metodologia do custo de energia:</strong> estimativa com base no consumo certificado pelo INMETRO, proporcional a 8h de uso por dia. A bandeira tarifária vigente pode elevar o custo em até 34% (bandeira vermelha 2). Consulte em <strong>aneel.gov.br</strong>.</div><div class="restart-wrap"><button onclick="irPara('home')">Voltar ao início</button></div>`;
+  app.innerHTML=`<div class="slide-in">${html}</div>`;
+}
+
+// ── CATÁLOGO ──
+const pillState={wifi:false,silencioso:false,maresia:false,ia:false};
+function togglePill(k){pillState[k]=!pillState[k];document.getElementById('pill-'+k).classList.toggle('active',pillState[k]);aplicarFiltros();}
+
+function aplicarFiltros(){
+  const btus=document.getElementById('f-btus').value;
+  const fab=document.getElementById('f-fab').value;
+  const preco=document.getElementById('f-preco').value;
+  const ordem=document.getElementById('f-ordem').value;
+  let lista=PRODUTOS.filter(p=>p.status!=='inativo'&&p.status!=='descontinuado').map(p=>({...p,...LINHAS[p.pl]}));
+  if(btus) lista=lista.filter(p=>p.btus===parseInt(btus));
+  if(fab)  lista=lista.filter(p=>p.fab===fab);
+  if(preco)lista=lista.filter(p=>p.p&&p.p<=parseInt(preco));
+  if(pillState.wifi)       lista=lista.filter(p=>p.wifi);
+  if(pillState.silencioso) lista=lista.filter(p=>p.silencioso);
+  if(pillState.maresia)    lista=lista.filter(p=>p.maresia);
+  if(pillState.ia)         lista=lista.filter(p=>p.ia);
+  lista.sort((a,b)=>ordem==='idrs'?(b.idrs||0)-(a.idrs||0):ordem==='kwh'?(a.kwh||9999)-(b.kwh||9999):ordem==='preco_asc'?(a.p||9999)-(b.p||9999):(b.p||0)-(a.p||0));
+  renderCatalogo(lista);
+}
+
+function renderCatalogo(lista){
+  const grid=document.getElementById('cat-grid');
+  document.getElementById('meta-count').textContent=`${lista.length} produto${lista.length!==1?'s':''} encontrado${lista.length!==1?'s':''}`;
+  if(lista.length===0){grid.innerHTML=`<div class="empty"><div class="empty-title">Nenhum produto encontrado</div><p>Tente remover alguns filtros.</p></div>`;return;}
+  grid.innerHTML=lista.map(p=>{
+    const l=LINHAS[p.pl];const e=calcEnergia(p.kwh);
+    const selos=[];if(p.idrs>=7)selos.push({label:"Octara Ouro",cls:"selo-ouro"});else if(p.idrs>=5)selos.push({label:"Octara Recomenda",cls:"selo-recomenda"});
+    const precoTxt=p.p?`R$ ${p.p.toLocaleString('pt-BR')}`:'consultar';
+    const url=`https://www.google.com.br/search?q=${encodeURIComponent(p.fab+' '+p.linha+' '+(p.btus/1000)+'000 BTUs')}&tbm=shop`;
+    const feats=[];if(l.wifi)feats.push({t:'Wi-Fi',d:true});if(l.silencioso)feats.push({t:'Silencioso',d:true});if(l.ia)feats.push({t:'IA',d:true});if(l.maresia)feats.push({t:'Anti-maresia',d:false});if(l.inverter)feats.push({t:'Inverter',d:false});if(l.garantia_c>=120)feats.push({t:'10 anos compressor',d:false});
+    return `<div class="cat-card"><div class="card-brand">${p.fab}</div><div class="card-name">${p.linha}</div><div class="card-btus">${(p.btus/1000).toFixed(0)}k BTUs${p.status==='baixa'?' · <span style="color:#B45309">baixa disponibilidade</span>':''}</div>${selos.length?`<div class="selos">${selos.map(s=>`<span class="selo ${s.cls}">${s.label}</span>`).join('')}</div>`:''}<div class="cat-features">${feats.map(f=>`<span class="feature${f.d?' destaque':''}">${f.t}</span>`).join('')}</div>${e?`<div class="energia-bloco"><div><div class="eb-label">Custo/mês estimado</div><div class="eb-val">R$ ${e.verde}</div><div class="eb-note">bandeira verde · 8h/dia</div></div><div><div class="eb-rl">Bandeira verm. 2</div><div class="eb-rv">R$ ${e.vermelha2}</div><div class="eb-rl">${e.kwh_mes} kWh/mês</div></div></div>`:`<div style="background:#f3f4f6;border-radius:8px;padding:9px 12px;margin-bottom:10px;font-size:11px;color:#9CA3AF">Custo mensal: dado não disponível</div>`}<div class="cat-metrics"><div class="cat-metric"><div class="cm-label">Consumo anual</div><div class="cm-val">${p.kwh?Math.round(p.kwh):'—'} <span class="cm-unit">${p.kwh?'kWh':''}</span></div></div><div class="cat-metric"><div class="cm-label">IDRS</div><div class="cm-val">${p.idrs?p.idrs.toFixed(1):'n/d'}</div></div></div><div class="cat-footer"><div><div class="cat-price">${precoTxt}</div><div class="cat-price-label">preço de referência</div></div><a class="btn-oferta" href="${url}" target="_blank" rel="noopener">Ver oferta</a></div></div>`;
+  }).join('')+`<div class="quiz-cta-block"><p>Não sabe qual BTU precisa ou quer uma <strong>recomendação personalizada</strong>?</p><button class="btn-primary" onclick="irPara('quiz')">Fazer o quiz da Octara</button></div>`;
+}
+
+function limparFiltros(){document.getElementById('f-btus').value='';document.getElementById('f-fab').value='';document.getElementById('f-preco').value='';document.getElementById('f-ordem').value='idrs';Object.keys(pillState).forEach(k=>{pillState[k]=false;document.getElementById('pill-'+k).classList.remove('active');});aplicarFiltros();}
+</script>
+</body>
+</html>
