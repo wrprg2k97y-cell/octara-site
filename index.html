@@ -198,7 +198,8 @@ body { font-family:'Inter',sans-serif; background:var(--petrol); color:#fff; min
     </div>
   </div>
   <nav class="header-nav">
-    <button class="nav-btn" onclick="irPara('catalogo')" id="nav-catalogo">Explorar produtos</button>
+    <button class="nav-btn" onclick="irPara('catalogo')" id="nav-catalogo">Ar-condicionado</button>
+    <button class="nav-btn" onclick="irPara('quiz-geladeira')" id="nav-quiz-gl">Geladeiras</button>
     <button class="nav-btn orange" onclick="irPara('quiz')" id="nav-quiz">Fazer o quiz</button>
   </nav>
 </header>
@@ -233,7 +234,8 @@ body { font-family:'Inter',sans-serif; background:var(--petrol); color:#fff; min
         <span class="pillar">Decisão com confiança</span>
       </div>
       <div class="hero-buttons">
-        <button class="btn-primary" onclick="irPara('quiz')">Começar análise</button>
+        <button class="btn-primary" onclick="irPara('quiz')">Ar-condicionado</button>
+        <button class="btn-primary" style="background:var(--green)" onclick="irPara('quiz-geladeira')">Geladeiras</button>
         <button class="btn-secondary" onclick="irPara('catalogo')">Explorar produtos</button>
       </div>
       <div class="hero-note">8 perguntas · sem cadastro · gratuito</div>
@@ -252,6 +254,20 @@ body { font-family:'Inter',sans-serif; background:var(--petrol); color:#fff; min
 <div id="page-results" class="page">
   <div id="results-wrap">
     <div class="results-shell" id="results-app"></div>
+  </div>
+</div>
+
+<!-- QUIZ GELADEIRAS -->
+<div id="page-quiz-geladeira" class="page">
+  <div id="quiz-gl-wrap" style="background:var(--warm-white);min-height:calc(100vh - 60px);display:flex;align-items:flex-start;justify-content:center;padding:3rem 1.5rem 4rem;">
+    <div class="quiz-shell" id="quiz-gl-app"></div>
+  </div>
+</div>
+
+<!-- RESULTS GELADEIRAS -->
+<div id="page-results-geladeira" class="page">
+  <div id="results-gl-wrap" style="background:var(--warm-white);padding:3rem 1.5rem 5rem;">
+    <div class="results-shell" id="results-gl-app"></div>
   </div>
 </div>
 
@@ -380,6 +396,7 @@ function irPara(pagina){
   window.scrollTo(0,0);
   if(pagina==='catalogo') aplicarFiltros();
   if(pagina==='quiz') { answers={}; step=0; renderQuiz(document.getElementById('quiz-app')); }
+  if(pagina==='quiz-geladeira') { glAnswers={}; glStep=0; renderGLQuiz(document.getElementById('quiz-gl-app')); }
 }
 
 // ── QUIZ ──
@@ -423,7 +440,14 @@ function showResults(){
   else if(algumFora)html+=`<div class="budget-notice">A maioria das recomendações está dentro do seu orçamento. Uma delas ficou um pouco acima de <strong>${orcLabel}</strong> — incluímos porque, pelo perfil do seu ambiente, ela entrega algo que as opções mais baratas não conseguem oferecer. Você decide se vale a diferença.</div>`;
   top3.forEach((p,i)=>{const l=LINHAS[p.pl];const fora=p.p&&pmax<99999&&p.p>pmax;const selos=getSelos(p,l,answers);const energia=calcEnergia(p.kwh);const precoTxt=p.p?`R$ ${p.p.toLocaleString("pt-BR")}`:"consultar disponibilidade";const just=gerarJustificativa(p,l,answers);const idrsText=p.idrs?p.idrs.toFixed(1):"n/d";const cardClass=fora?"card fora-orc":i===0?"card top":"card";const url=getUrlProduto(p.id,p.fab,p.linha,p.btus);
   html+=`<div class="${cardClass}"><div class="card-brand">${p.fab}</div><div class="card-name">${p.linha}</div><div class="card-btus">${p.btus/1000}k BTUs</div>${selos.length?`<div class="selos">${selos.map(s=>`<span class="selo ${s.cls}">${s.label}</span>`).join("")}</div>`:""}<div class="card-why">${just}</div>${energia?`<div class="energia-destaque"><div><div class="energia-label">Custo estimado por mês</div><div class="energia-val">R$ ${energia.verde}</div><div class="energia-note">bandeira verde &middot; 8h/dia &middot; base INMETRO</div></div><div><div class="energia-range-label">Bandeira vermelha 2</div><div class="energia-range-val">até R$ ${energia.vermelha2}/mês</div><div class="energia-range-label" style="margin-top:3px">${energia.kwh_mes} kWh/mês</div></div></div>`:`<div class="metric" style="margin-bottom:12px;background:#f3f4f6;border-radius:8px;padding:10px 12px"><div class="metric-label">Custo mensal de energia</div><div class="metric-val" style="font-size:13px;color:#9CA3AF">dado não disponível</div></div>`}<div class="metrics"><div class="metric"><div class="metric-label">Consumo anual</div><div class="metric-val">${p.kwh?Math.round(p.kwh):'—'} <span class="metric-unit">${p.kwh?'kWh':''}</span></div></div><div class="metric"><div class="metric-label">IDRS</div><div class="metric-val">${idrsText}</div></div></div><div class="card-footer"><div><div class="price-main">${precoTxt}</div><div class="price-label">${fora?'<span style="color:#B45309">acima do orçamento informado</span>':'preço de referência'}</div></div><a class="btn-oferta" href="${url}" target="_blank" rel="noopener">Ver oferta</a></div></div>`;});
-  html+=`<div class="alert-box"><strong>Metodologia do custo de energia:</strong> estimativa com base no consumo certificado pelo INMETRO, proporcional a 8h de uso por dia. A bandeira tarifária vigente pode elevar o custo em até 34% (bandeira vermelha 2). Consulte em <strong>aneel.gov.br</strong>.</div><div class="restart-wrap"><button onclick="irPara('home')">Voltar ao início</button></div>`;
+  html+=`<div class="alert-box"><strong>Metodologia do custo de energia:</strong> estimativa com base no consumo certificado pelo INMETRO, proporcional a 8h de uso por dia. A bandeira tarifária vigente pode elevar o custo em até 34% (bandeira vermelha 2). Consulte em <strong>aneel.gov.br</strong>.</div><div style="margin-top:0.75rem;padding:10px 14px;background:#F3F4F6;border-radius:10px;font-size:11px;color:#6B7280;line-height:1.6;text-align:center;">🐙 A Octara é independente. Ao comprar pelos links indicados, podemos receber uma comissão — mas isso <strong>nunca altera</strong> a ordem do nosso ranking técnico.</div>
+  <div style="background:var(--petrol);border-radius:16px;padding:1.5rem;margin-top:1.5rem;text-align:center;">
+    <div style="font-size:13px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Guarde sua recomendação</div>
+    <div style="font-family:'Playfair Display',serif;font-size:20px;color:#fff;margin-bottom:8px;">Receba sua análise por email</div>
+    <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:1.25rem;line-height:1.6;">Consulte na hora da compra — sem precisar refazer o quiz.</div>
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeVVZCDEdmyECZp0fiEHDvyY8pPKRqu6us5avb-tnUmRCza9Q/viewform?embedded=true" width="100%" height="380" frameborder="0" marginheight="0" marginwidth="0" style="border-radius:12px;background:#fff;">Carregando…</iframe>
+  </div>
+  <div class="restart-wrap"><button onclick="irPara('home')">Voltar ao início</button></div>`;
   app.innerHTML=`<div class="slide-in">${html}</div>`;
 }
 
@@ -463,6 +487,103 @@ function renderCatalogo(lista){
 }
 
 function limparFiltros(){document.getElementById('f-btus').value='';document.getElementById('f-fab').value='';document.getElementById('f-preco').value='';document.getElementById('f-ordem').value='idrs';Object.keys(pillState).forEach(k=>{pillState[k]=false;document.getElementById('pill-'+k).classList.remove('active');});aplicarFiltros();}
+
+// ── BANCO DE DADOS GELADEIRAS ──
+const GELADEIRAS_LINHAS={GL001:{fab:"Brastemp",linha:"Frost Free French Door Xpert Inverter",tipo:"French Door",portas:3,inverter:true,wifi:false,dispenser:false,alarme:true,filtro:true},GL002:{fab:"Electrolux",linha:"Frost Free Efficient AutoSense 3 Portas",tipo:"Multidoor",portas:3,inverter:false,wifi:false,dispenser:false,alarme:true,filtro:true},GL003:{fab:"Panasonic",linha:"Frost Free Top Freezer A+++",tipo:"Top Freezer",portas:2,inverter:false,wifi:false,dispenser:false,alarme:false,filtro:true},GL004:{fab:"Electrolux",linha:"Frost Free Inverter Efficient AutoSense Inverse",tipo:"Inverse",portas:2,inverter:true,wifi:false,dispenser:false,alarme:true,filtro:true},GL005:{fab:"Consul",linha:"Frost Free Duplex Inverter",tipo:"Duplex",portas:2,inverter:true,wifi:false,dispenser:false,alarme:false,filtro:false},GL006:{fab:"Brastemp",linha:"Frost Free Duplex Compartimento Extrafrio",tipo:"Duplex",portas:2,inverter:false,wifi:false,dispenser:false,alarme:false,filtro:false},GL007:{fab:"Samsung",linha:"Side by Side Dispenser Água e Gelo",tipo:"Side by Side",portas:2,inverter:false,wifi:false,dispenser:true,alarme:true,filtro:false},GL008:{fab:"Consul",linha:"Cycle Defrost Duplex Freezer Supercapacidade",tipo:"Duplex",portas:2,inverter:false,wifi:false,dispenser:false,alarme:false,filtro:false},GL009:{fab:"Electrolux",linha:"Frost Free Inverter Efficient AutoSense French Door",tipo:"French Door",portas:3,inverter:true,wifi:false,dispenser:false,alarme:true,filtro:true},GL010:{fab:"Panasonic",linha:"Frost Free Inverter Inverse A+++",tipo:"Inverse",portas:2,inverter:true,wifi:false,dispenser:false,alarme:false,filtro:true},GL011:{fab:"LG",linha:"Side by Side Smart InstaView Door-in-Door",tipo:"Side by Side",portas:2,inverter:true,wifi:true,dispenser:true,alarme:true,filtro:false},GL012:{fab:"LG",linha:"Side by Side Inverter A+++",tipo:"Side by Side",portas:2,inverter:true,wifi:false,dispenser:false,alarme:false,filtro:false},GL013:{fab:"Midea",linha:"Frost Free Duplex Inverter",tipo:"Duplex",portas:2,inverter:true,wifi:false,dispenser:false,alarme:false,filtro:false},GL014:{fab:"Midea",linha:"Frost Free Duplex Inverter Freezer Grande",tipo:"Duplex",portas:2,inverter:true,wifi:false,dispenser:false,alarme:false,filtro:false},GL015:{fab:"Samsung",linha:"French Door Family Hub",tipo:"French Door",portas:3,inverter:false,wifi:true,dispenser:true,alarme:false,filtro:false}};
+
+const GELADEIRAS=[{id:"GL001",pl:"GL001",cap:554,cap_freezer:177,efic:"A+++",kwh:56.6,p:6934,avaliacao:5.0,faixa:"alto"},{id:"GL002",pl:"GL002",cap:596,cap_freezer:200,efic:"A",kwh:32.6,p:6799,avaliacao:4.4,faixa:"alto"},{id:"GL003",pl:"GL003",cap:387,cap_freezer:95,efic:"A+++",kwh:null,p:2699,avaliacao:4.5,faixa:"intermediario"},{id:"GL004",pl:"GL004",cap:490,cap_freezer:167,efic:"A",kwh:29.4,p:4999,avaliacao:4.5,faixa:"alto"},{id:"GL005",pl:"GL005",cap:377,cap_freezer:94,efic:"A",kwh:24.9,p:2598,avaliacao:4.7,faixa:"intermediario"},{id:"GL006",pl:"GL006",cap:375,cap_freezer:86,efic:"A",kwh:54,p:2958,avaliacao:4.5,faixa:"intermediario"},{id:"GL007",pl:"GL007",cap:628,cap_freezer:209,efic:"A",kwh:37.4,p:9499,avaliacao:1.7,faixa:"alto"},{id:"GL008",pl:"GL008",cap:334,cap_freezer:76,efic:"A",kwh:43.5,p:1906,avaliacao:null,faixa:"economico"},{id:"GL009",pl:"GL009",cap:480,cap_freezer:167,efic:"C",kwh:39.1,p:5224,avaliacao:4.3,faixa:"alto"},{id:"GL010",pl:"GL010",cap:460,cap_freezer:151,efic:"A+++",kwh:36.2,p:4299,avaliacao:4.5,faixa:"alto"},{id:"GL011",pl:"GL011",cap:599,cap_freezer:null,efic:"A+++",kwh:57.5,p:14724,avaliacao:null,faixa:"ultra_premium"},{id:"GL012",pl:"GL012",cap:509,cap_freezer:null,efic:"A+++",kwh:44,p:5604,avaliacao:4.4,faixa:"alto"},{id:"GL013",pl:"GL013",cap:394,cap_freezer:99,efic:"A",kwh:null,p:2899,avaliacao:null,faixa:"intermediario"},{id:"GL014",pl:"GL014",cap:425,cap_freezer:120,efic:"A",kwh:26.7,p:2899,avaliacao:null,faixa:"intermediario"},{id:"GL015",pl:"GL015",cap:707,cap_freezer:212,efic:null,kwh:null,p:18999,avaliacao:null,faixa:"ultra_premium"}];
+
+const GL_ORC_RANGES={economico:[0,2500],intermediario:[0,3500],alto:[0,7000],premium:[0,99999]};
+const GL_ORC_LABELS={economico:"R$ 2.500",intermediario:"R$ 3.500",alto:"R$ 7.000",premium:null};
+
+const GL_QUESTIONS=[{id:"pessoas",text:"Quantas pessoas moram na casa?",sub:"Define a capacidade ideal em litros.",opts:[{val:"1a2",label:"1 a 2 pessoas",sub:"até 380 litros"},{val:"3a4",label:"3 a 4 pessoas",sub:"380 a 480 litros"},{val:"5mais",label:"5 ou mais pessoas",sub:"acima de 480 litros"}]},{id:"espaco",text:"Qual é o espaço disponível na cozinha?",sub:"O tipo de geladeira precisa caber no ambiente.",opts:[{val:"compacto",label:"Espaço compacto",sub:"abertura simples, sem espaço lateral"},{val:"medio",label:"Espaço médio",sub:"cabe uma geladeira padrão"},{val:"amplo",label:"Espaço amplo",sub:"cabe modelos grandes ou side by side"}]},{id:"orcamento",text:"Qual é o seu orçamento para a compra?",sub:"Os modelos do nosso banco vão de R$ 1.900 a R$ 19.000.",opts:[{val:"economico",label:"Até R$ 2.500",sub:"opções funcionais e econômicas"},{val:"intermediario",label:"Até R$ 3.500",sub:"melhor custo-benefício"},{val:"alto",label:"Até R$ 7.000",sub:"modelos com mais tecnologia"},{val:"premium",label:"Sem limite",sub:"quero o melhor disponível"}]},{id:"freezer",text:"Freezer grande é prioridade para você?",sub:"Importante para quem congela alimentos com frequência.",opts:[{val:"sim",label:"Sim, uso muito o freezer",sub:"preciso de bastante espaço para congelar"},{val:"nao",label:"Não, uso pouco o freezer",sub:"priorizo o espaço da geladeira"},{val:"tanto_faz",label:"Tanto faz",sub:"não tenho preferência"}]},{id:"energia",text:"Economia de energia é prioridade?",sub:"Modelos A+++ consomem até 40% menos que os de classe A.",opts:[{val:"sim",label:"Sim, quero o mais econômico",sub:"eficiência máxima na conta de luz"},{val:"equilibrio",label:"Equilíbrio entre preço e eficiência",sub:"não quero pagar muito mais pelo A+++"},{val:"nao",label:"Não é minha prioridade",sub:"outros fatores importam mais"}]},{id:"extras",text:"Alguma funcionalidade extra é importante?",sub:"Selecione o que faz diferença para você.",opts:[{val:"dispenser",label:"Dispenser de água ou gelo",sub:"água gelada sem abrir a geladeira"},{val:"wifi",label:"Wi-Fi e controle pelo celular",sub:"tecnologia e conectividade"},{val:"filtro",label:"Filtro antiodor",sub:"sem cheiro de alimentos misturados"},{val:"nenhum",label:"Nenhuma em especial",sub:"só quero uma boa geladeira"}]},{id:"prioridade",text:"O que é mais importante para você?",sub:"Define o peso final da nossa curadoria.",opts:[{val:"economia",label:"Economizar energia",sub:"menor conta de luz no longo prazo"},{val:"espaco",label:"Máximo de espaço",sub:"maior capacidade possível"},{val:"tecnologia",label:"Tecnologia e recursos",sub:"inverter, wi-fi, sensores"},{val:"equilibrio",label:"Equilíbrio geral",sub:"melhor custo-benefício"}]}];
+
+let glAnswers={},glStep=0,glTransitioning=false;
+
+function scoreGeladeira(g,l,a){
+  let s=50;
+  const capIdeal={"1a2":[200,380],"3a4":[350,490],"5mais":[470,9999]}[a.pessoas]||[300,500];
+  if(g.cap>=capIdeal[0]&&g.cap<=capIdeal[1])s+=20;
+  else if(g.cap<capIdeal[0])s-=20;
+  else s+=5;
+  if(a.espaco==="compacto"&&(l.tipo==="Duplex"||l.tipo==="Top Freezer"))s+=15;
+  if(a.espaco==="compacto"&&(l.tipo==="Side by Side"||l.tipo==="French Door"))s-=20;
+  if(a.espaco==="amplo"&&(l.tipo==="Side by Side"||l.tipo==="French Door"||l.tipo==="Multidoor"))s+=15;
+  if(a.espaco==="medio"&&(l.tipo==="Inverse"||l.tipo==="Duplex"))s+=10;
+  const[,pmax]=GL_ORC_RANGES[a.orcamento]||[0,99999];
+  if(g.p>pmax)s-=40;
+  if(g.p<=pmax)s+=10;
+  if(a.freezer==="sim"&&g.cap_freezer&&g.cap_freezer>=120)s+=15;
+  if(a.freezer==="nao"&&g.cap_freezer&&g.cap_freezer<100)s+=10;
+  if(a.energia==="sim"&&g.efic==="A+++")s+=25;
+  if(a.energia==="sim"&&g.efic==="A")s+=10;
+  if(a.energia==="sim"&&g.efic==="C")s-=10;
+  if(a.energia==="equilibrio"&&(g.efic==="A"||g.efic==="A+++"))s+=15;
+  if(a.extras==="dispenser"&&l.dispenser)s+=20;
+  if(a.extras==="wifi"&&l.wifi)s+=20;
+  if(a.extras==="filtro"&&l.filtro)s+=15;
+  if(a.prioridade==="economia"&&g.efic==="A+++")s+=20;
+  if(a.prioridade==="economia"&&g.kwh)s+=Math.max(0,(60-g.kwh)*2);
+  if(a.prioridade==="espaco")s+=Math.min(20,(g.cap-300)/15);
+  if(a.prioridade==="tecnologia"&&l.inverter)s+=15;
+  if(a.prioridade==="tecnologia"&&l.wifi)s+=10;
+  if(a.prioridade==="equilibrio"){if(g.efic==="A"||g.efic==="A+++")s+=10;if(l.inverter)s+=8;if(g.avaliacao&&g.avaliacao>=4.4)s+=10;}
+  if(g.avaliacao&&g.avaliacao>=4.5)s+=10;
+  if(g.avaliacao&&g.avaliacao<2)s-=20;
+  return Math.round(s);
+}
+
+function gerarJustificativaGL(g,l,a){
+  const pts=[];
+  if(a.espaco==="compacto"&&(l.tipo==="Duplex"||l.tipo==="Top Freezer"))pts.push("ocupa pouco espaço — ideal para cozinhas menores");
+  if(a.espaco==="amplo"&&(l.tipo==="Side by Side"||l.tipo==="French Door"))pts.push("aproveita bem o espaço disponível com formato amplo");
+  if(a.freezer==="sim"&&g.cap_freezer&&g.cap_freezer>=120)pts.push(`freezer generoso de ${g.cap_freezer}L — ideal para quem congela bastante`);
+  if(a.energia==="sim"&&g.efic==="A+++")pts.push("eficiência A+++ — entre os mais econômicos na conta de luz");
+  if(a.extras==="dispenser"&&l.dispenser)pts.push("dispenser de água e gelo integrado");
+  if(a.extras==="wifi"&&l.wifi)pts.push("conectividade Wi-Fi para controle pelo celular");
+  if(a.extras==="filtro"&&l.filtro)pts.push("filtro antiodor para manter os alimentos frescos");
+  if(l.inverter)pts.push("compressor Inverter — mais silencioso e econômico");
+  if(g.avaliacao&&g.avaliacao>=4.5)pts.push(`avaliação ${g.avaliacao} ⭐ pelos consumidores`);
+  if(a.prioridade==="equilibrio")pts.push("equilíbrio sólido entre preço, capacidade e eficiência");
+  if(pts.length===0)pts.push("boa relação entre capacidade e eficiência para o perfil identificado");
+  return pts.map((x,i)=>i===0?x.charAt(0).toUpperCase()+x.slice(1):x).join("; ")+".";
+}
+
+function glSelectAndAdvance(qid,val){if(glTransitioning)return;glAnswers[qid]=val;renderGLQuiz(document.getElementById("quiz-gl-app"));glTransitioning=true;setTimeout(()=>{glStep++;glTransitioning=false;if(glStep<GL_QUESTIONS.length)renderGLQuiz(document.getElementById("quiz-gl-app"));else showGLResults();},300);}
+function glGoBack(){glStep--;renderGLQuiz(document.getElementById("quiz-gl-app"));}
+
+function renderGLQuiz(app){
+  const q=GL_QUESTIONS[glStep];const pct=Math.round((glStep/GL_QUESTIONS.length)*100);
+  const wrap=document.createElement("div");wrap.className="slide-in";
+  wrap.innerHTML=`<div class="quiz-logo">${POLVO}<div class="quiz-wordmark">octa<span>ra</span> · Geladeiras</div></div><div class="progress-wrap"><div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-label">pergunta ${glStep+1} de ${GL_QUESTIONS.length}</div></div><div class="q-text">${q.text}</div><div class="q-sub">${q.sub}</div><div class="options" id="gl-opts"></div>${glStep>0?`<button class="back-btn" onclick="glGoBack()">Voltar</button>`:""}`;
+  app.innerHTML="";app.appendChild(wrap);
+  const opts=document.getElementById("gl-opts");
+  q.opts.forEach(o=>{const btn=document.createElement("button");btn.className="opt"+(glAnswers[q.id]===o.val?" selected":"");btn.innerHTML=`<div>${o.label}</div>${o.sub?`<div class="opt-sub">${o.sub}</div>`:""}`;btn.onclick=()=>glSelectAndAdvance(q.id,o.val);opts.appendChild(btn);});
+}
+
+function showGLResults(){
+  irPara('results-geladeira');
+  const app=document.getElementById("results-gl-app");
+  const top3=GELADEIRAS.map(g=>({...g,...GELADEIRAS_LINHAS[g.pl],_score:scoreGeladeira(g,GELADEIRAS_LINHAS[g.pl],glAnswers)})).sort((a,b)=>b._score-a._score).slice(0,3);
+  const[,pmax]=GL_ORC_RANGES[glAnswers.orcamento]||[0,99999];
+  const orcLabel=GL_ORC_LABELS[glAnswers.orcamento];
+  const pessoasLabel={"1a2":"1 a 2 pessoas","3a4":"3 a 4 pessoas","5mais":"5 ou mais pessoas"}[glAnswers.pessoas];
+  let html=`<div class="results-logo">${POLVO}<div class="results-wordmark">octa<span>ra</span></div></div><div class="results-tagline">motor de decisão de compra · geladeiras</div><div class="divider"></div><div class="results-title">Sua geladeira ideal</div><div class="results-sub">${pessoasLabel}${orcLabel?' · orçamento até '+orcLabel:''}</div>`;
+  top3.forEach((g,i)=>{
+    const l=GELADEIRAS_LINHAS[g.pl];
+    const fora=g.p&&pmax<99999&&g.p>pmax;
+    const precoTxt=g.p?`R$ ${g.p.toLocaleString("pt-BR")}`:"consultar disponibilidade";
+    const just=gerarJustificativaGL(g,l,glAnswers);
+    const cardClass=fora?"card fora-orc":i===0?"card top":"card";
+    const url=`https://www.google.com.br/search?q=${encodeURIComponent(g.fab+' '+g.linha)}&tbm=shop`;
+    const eficBadge=g.efic?`<span class="selo ${g.efic==='A+++'?'selo-ouro':g.efic==='A'?'selo-recomenda':'selo-entrada'}">${g.efic}</span>`:"";
+    const feats=[];if(l.inverter)feats.push("Inverter");if(l.wifi)feats.push("Wi-Fi");if(l.dispenser)feats.push("Dispenser");if(l.filtro)feats.push("Filtro antiodor");if(l.alarme)feats.push("Alarme de porta");
+    html+=`<div class="${cardClass}"><div class="card-brand">${g.fab}</div><div class="card-name">${l.linha}</div><div class="card-btus">${l.tipo} · ${g.cap}L total${g.cap_freezer?' · '+g.cap_freezer+'L freezer':''}</div><div class="selos">${eficBadge}${feats.map(f=>`<span class="selo selo-entrada">${f}</span>`).join("")}</div><div class="card-why">${just}</div><div class="metrics"><div class="metric"><div class="metric-label">Consumo mensal</div><div class="metric-val">${g.kwh?g.kwh+' <span class="metric-unit">kWh</span>':'—'}</div></div><div class="metric"><div class="metric-label">Avaliação</div><div class="metric-val">${g.avaliacao?g.avaliacao+' ⭐':'—'}</div></div></div><div class="card-footer"><div><div class="price-main">${precoTxt}</div><div class="price-label">${fora?'<span style="color:#B45309">acima do orçamento informado</span>':'preço de referência'}</div></div><a class="btn-oferta" href="${url}" target="_blank" rel="noopener">Ver oferta</a></div></div>`;
+  });
+  html+=`<div style="margin-top:0.75rem;padding:10px 14px;background:#F3F4F6;border-radius:10px;font-size:11px;color:#6B7280;line-height:1.6;text-align:center;">🐙 A Octara é independente. Ao comprar pelos links indicados, podemos receber uma comissão — mas isso <strong>nunca altera</strong> a ordem do nosso ranking técnico.</div><div class="restart-wrap"><button onclick="irPara('home')">Voltar ao início</button></div>`;
+  app.innerHTML=`<div class="slide-in">${html}</div>`;
+}
+
 </script>
 </body>
 </html>
